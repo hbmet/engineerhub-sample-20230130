@@ -1,0 +1,60 @@
+[project]
+name = "fastapi-crushcourse"
+description = ""
+dynamic = ["version"]
+authors = [{ name = "Du Shiqiao", email = "lucidfrontier.45@gmail.com" }]
+dependencies = [
+    "fastapi>=0.88.0",
+    "uvicorn>=0.20.0",
+    "onnx>=1.12.0",
+    "onnxruntime>=1.13.1",
+    "pillow>=9.3.0",
+    "sqlalchemy>=1.4.45",
+    "pymongo>=4.3.3",
+    "python-multipart>=0.0.5",
+    "asyncpg>=0.27.0",
+    "pg8000>=1.29.3",
+]
+requires-python = ">=3.10,<3.11"
+license = { text = "MIT" }
+[project.optional-dependencies]
+
+[build-system]
+requires = ["pdm-pep517>=1.0.0"]
+build-backend = "pdm.pep517.api"
+
+[tool.pdm]
+version = { source = "file", path = "src/webapp/__init__.py" }
+[tool.pdm.dev-dependencies]
+dev = [
+    "black>=22.12.0",
+    "ruff>=0.0.224",
+    "pyright>=1.1.289",
+    "types-SQLAlchemy>=1.4.53.24",
+]
+
+[tool.pdm.scripts]
+black = "black ."
+pyright = "pyright ."
+ruff_lint = "ruff ."
+ruff_fix = "ruff --fix-only ."
+test = "pytest tests --cov=app --cov-report=term --cov-report=xml"
+format = { composite = ["ruff_fix", "black"] }
+lint = { composite = ["ruff_lint", "pyright"] }
+check = { composite = ["format", "lint", "test"] }
+
+[tool.pytest.ini_options]
+filterwarnings = ["ignore::FutureWarning"]
+
+[tool.black]
+target-version = ["py310"]
+
+[tool.ruff]
+select = ["E", "F", "W"]
+target-version = "py310"
+
+[tool.ruff.per-file-ignores]
+"*/__init__.py" = ['F401']
+
+[tool.pyright]
+pythonVersion = "3.10"
